@@ -1,0 +1,9 @@
+{
+  "name": "js-gmapsRadiusDistanceSearch",
+  "dependencies": {
+    "requirejs"  : "2.1.5",
+    "jquery"     : ">=1.8",
+    "underscore" : "1.7",
+    "gmaps": "0.4.16"
+  }
+}

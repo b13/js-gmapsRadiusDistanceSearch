@@ -1,0 +1,30 @@
+{
+	"name": "js-gmapsRadiusDistanceSearch",
+	"description": "AMD Module",
+	"version": "1.0.1",
+	"engines": {
+		"node": ">= 0.8.0"
+	},
+	"author": {
+		"name": "Daniel Sattler",
+		"email": "sattler@b13.de",
+		"url": "http://b13.de"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://mit-license.org"
+		}
+	],
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-concat": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-contrib-clean": "*",
+		"grunt-contrib-requirejs": "*",
+		"grunt-contrib-connect": "*",
+		"bower": "^1.3.6",
+		"grunt-bower-requirejs": "^0.11.0"
+	}
+}
