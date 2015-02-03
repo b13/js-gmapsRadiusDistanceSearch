@@ -2,7 +2,8 @@ var B = B || {};
 
 define("main", [
 	"jquery"
-], function($) {
+	, "underscore"
+], function($, _) {
 
 		// will be called on document ready
 	function initialize() {
@@ -54,6 +55,19 @@ define("main", [
 				console.log("distance between marker0 and marker2 : " + distanceBetweenM0M2 + "km");
 				console.log("markers inside a 100km distance to marker 0:");
 				console.log(radiusDistanceSearch);
+
+
+				setTimeout(function() {
+					console.log("toggle markers by collection");
+					me.toggleMarkerByCollection(radiusDistanceSearch)
+				}, 3000);
+
+
+				setTimeout(function() {
+					console.log("show all marker");
+					me.showAllMarker();
+				}, 6000);
+
 			});
 
 			return me;

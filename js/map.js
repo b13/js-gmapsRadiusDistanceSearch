@@ -76,6 +76,43 @@ define([
 		};
 
 
+
+			/**
+			 * show all marker on map
+			 */
+		me.showAllMarker = function() {
+			_.each(s.collection, function(item) {
+				item.marker.setVisible(true);
+			});
+		};
+
+
+
+			/**
+			 * hide all marker on map
+			 */
+		me.hideAllMarker = function() {
+			_.each(s.collection, function(item) {
+				item.marker.setVisible(false);
+			});
+		};
+
+
+			/**
+			 * toggle markers by a given collection
+			 * @param collection
+			 */
+		me.toggleMarkerByCollection = function(collection) {
+			_.each(s.collection, function(item) {
+				if (!_.isUndefined(_.findWhere(collection, item))) {
+					item.marker.setVisible(true);
+				} else {
+					item.marker.setVisible(false);
+				}
+			});
+		};
+
+
 			 /**
 			  * get geo code by address
 			  *
@@ -127,9 +164,9 @@ define([
 		me.radiusDistanceSearch = function(marker, distanceRadius) {
 			var markerMatchSearch = [];
 
-			_.each(s.collection, function(model) {
-				if (me.getDistanceBetweenMarker(marker, model.marker) <= distanceRadius) {
-					markerMatchSearch.push(model);
+			_.each(s.collection, function(item) {
+				if (me.getDistanceBetweenMarker(marker, item.marker) <= distanceRadius) {
+					markerMatchSearch.push(item);
 				}
 			});
 
