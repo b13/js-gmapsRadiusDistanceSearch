@@ -12,14 +12,15 @@ define([
 	"jquery"
 	, "underscore"
 	, "gmaps"
-], function(_) {
+], function($, _) {
 
 	return (function maps(opts) {
 
 		var
 			me  = this
 			, s = {
-				collection: {}
+				collection: []
+				, gmap : {}
 				, gmapsOpts: {
 					div: '#bJS_googleMap'
 					, zoom: 6
@@ -32,8 +33,11 @@ define([
 
 		function initialize() {
 
-				// extend options
-			s.gmapsOpts = $.extend(s.gmapsOpts, opts);
+			if (!_.isUndefined(opts.collection)) {
+				s.collection = opts.collection;
+			}
+			me.collection = s.collection;
+			me.gmap = s.gmap;
 
 			return me;
 		}
@@ -41,9 +45,34 @@ define([
 
 			/**
 			 * init map
+			 *
+			 * @param mapOpts
+			 * @returns {Window.GMaps}
 			 */
-		me.initMap = function() {
-			me.map = $.extend(me.map, new window.GMaps(s.gmapsOpts));
+		me.initMap = function(mapOpts) {
+
+				// extend options
+			s.gmapsOpts = $.extend(s.gmapsOpts, mapOpts);
+			return new window.GMaps(s.gmapsOpts);
+		};
+
+
+
+			/**
+			 * add to collection
+			 * @param obj
+			 */
+		me.addToCollection = function(obj) {
+
+			if (!_.isUndefined(obj.latitude) && !_.isUndefined(obj.latitude)) {
+				return false;
+			}
+
+			s.collection.push( _.defaults(obj, {
+				latitude    : ""
+				, longitude : ""
+				, marker    : {}})
+			);
 		};
 
 
@@ -68,33 +97,38 @@ define([
 		};
 
 
+
 			/**
-			 * get collection
-			 * @returns {*}
+			 * get distance between two markers
+			 *
+			 * @param marker1
+			 * @param marker2
+			 * @returns {number}
 			 */
-		me.getCollection = function() {
-			return s.collection;
+		me.getDistanceBetweenMarker = function(marker1, marker2) {
+			var
+				position1   = marker1.getPosition()
+				, position2 = marker2.getPosition();
+
+			return Math.ceil(google.maps.geometry.spherical.computeDistanceBetween(position1, position2)/1000)
 		};
+
 
 
 			/**
 			 * radius distance search
+			 *
+			 * find all markers inside a given distance radius of a marker and return them as collection
 			 *
 			 * @param marker
 			 * @param distanceRadius
 			 * @returns {Array}
 			 */
 		me.radiusDistanceSearch = function(marker, distanceRadius) {
-			var
-				startPosition = marker.getPosition()
-				, markerMatchSearch = [];
+			var markerMatchSearch = [];
 
 			_.each(s.collection, function(model) {
-				var
-					distancePosition = model.get('marker').getPosition()
-					, distance = Math.ceil(google.maps.geometry.spherical.computeDistanceBetween(startPosition, distancePosition)/1000);
-
-				if (distance <= distanceRadius) {
+				if (me.getDistanceBetweenMarker(marker, model.marker) <= distanceRadius) {
 					markerMatchSearch.push(model);
 				}
 			});
