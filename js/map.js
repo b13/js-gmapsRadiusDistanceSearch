@@ -122,11 +122,13 @@ define([
 		me.getGeoCodeByAddress = function(address) {
 			var defer = new $.Deferred();
 
-			this.geocoder.geocode({
+			geocoder.geocode({
 				'address': address
 			}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					defer.resolve(results[0]);
+				} else {
+					defer.reject();
 				}
 			});
 
